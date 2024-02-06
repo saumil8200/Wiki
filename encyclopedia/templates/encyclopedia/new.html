@@ -1,0 +1,16 @@
+{% extends "encyclopedia/layout.html" %}
+{% load markdown_deux_tags %}
+
+{% block title %}
+    Title
+{% endblock %}
+
+{% block body %}
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit">
+    </form>
+
+{% endblock %}
