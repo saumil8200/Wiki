@@ -66,15 +66,15 @@ def random_page(request):
     return redirect("wiki", name=random_entry)
 
 def edit(request, name):
-    entry_content = util.get_entry(name)  # Get existing Markdown content
-    form = EditWikiForm(initial={'content': entry_content})  # Pre-populate form with existing content
+    entry_content = util.get_entry(name)
+    form = EditWikiForm(initial={'content': entry_content})
 
     if request.method == "POST":
         form = EditWikiForm(request.POST)
         if form.is_valid():
             new_content = form.cleaned_data["content"]
-            util.save_entry(name, new_content)  # Save updated content
-            return redirect("wiki", name=name)  # Redirect back to entry page
+            util.save_entry(name, new_content)
+            return redirect("wiki", name=name)
 
     return render(request, "encyclopedia/edit.html", {
         "form": form,
