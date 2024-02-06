@@ -12,6 +12,9 @@ class NewWikiForm(forms.Form):
     title = forms.CharField(label="Title")
     content = forms.CharField(label="Content", widget=forms.Textarea)
 
+class EditWikiForm(forms.Form):
+    content = forms.CharField(label="Content", widget=forms.Textarea)
+
 def index(request):
     return render(request, "encyclopedia/index.html", {
         "entries": util.list_entries()
@@ -19,7 +22,8 @@ def index(request):
 
 def wiki(request, name):
     return render(request, "encyclopedia/wiki.html", {
-        "entry": util.get_entry(name)
+        "entry": util.get_entry(name),
+        "entry_name": name
     })
 
 def search(request):
@@ -61,3 +65,18 @@ def random_page(request):
     random_entry = random.choice(entries)
     return redirect("wiki", name=random_entry)
 
+def edit(request, name):
+    entry_content = util.get_entry(name)  # Get existing Markdown content
+    form = EditWikiForm(initial={'content': entry_content})  # Pre-populate form with existing content
+
+    if request.method == "POST":
+        form = EditWikiForm(request.POST)
+        if form.is_valid():
+            new_content = form.cleaned_data["content"]
+            util.save_entry(name, new_content)  # Save updated content
+            return redirect("wiki", name=name)  # Redirect back to entry page
+
+    return render(request, "encyclopedia/edit.html", {
+        "form": form,
+        "entry_name": name
+    })

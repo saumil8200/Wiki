@@ -1,3 +1,3 @@
 # AWS
 
-this is aws.
+this is amazon web services.

@@ -2,7 +2,7 @@
 {% load markdown_deux_tags %}
 
 {% block title %}
-    Title
+    {{ name }}
 {% endblock %}
 
 {% block body %}
@@ -11,6 +11,9 @@
         <div>Requested page was not found.</div>
     {% else %}
         <div>{{ entry|markdown }}</div>
+        <div>
+            <a href="{% url 'edit' entry_name %}">Edit Wiki</a>
+        </div>
     {% endif %}
 
 {% endblock %}
